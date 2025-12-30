@@ -938,34 +938,62 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const currentDate = new Date().toISOString().split('T')[0];
 
-    announcementsList.innerHTML = announcements
-      .map(announcement => {
-        const isExpired = announcement.expiration_date < currentDate;
-        const expiredClass = isExpired ? 'expired' : '';
-        
-        const startDateDisplay = announcement.start_date 
-          ? `<span>📅 Start: ${formatDate(announcement.start_date)}</span>`
-          : '';
-        
-        return `
-          <div class="announcement-item ${expiredClass}" data-id="${announcement._id}">
-            <div class="announcement-item-message">${announcement.message}</div>
-            <div class="announcement-item-dates">
-              ${startDateDisplay}
-              <span>⏰ Expires: ${formatDate(announcement.expiration_date)}</span>
-            </div>
-            <div class="announcement-item-actions">
-              <button class="edit-announcement-btn" onclick="editAnnouncement('${announcement._id}')">
-                ✏️ Edit
-              </button>
-              <button class="delete-announcement-btn" onclick="deleteAnnouncement('${announcement._id}')">
-                🗑️ Delete
-              </button>
-            </div>
-          </div>
-        `;
-      })
-      .join("");
+    // Clear the list first
+    announcementsList.innerHTML = "";
+
+    announcements.forEach(announcement => {
+      const isExpired = announcement.expiration_date < currentDate;
+      
+      // Create announcement item container
+      const announcementItem = document.createElement("div");
+      announcementItem.className = `announcement-item ${isExpired ? 'expired' : ''}`;
+      announcementItem.dataset.id = announcement._id;
+
+      // Create and safely set the message using textContent to avoid XSS
+      const messageDiv = document.createElement("div");
+      messageDiv.className = "announcement-item-message";
+      messageDiv.textContent = announcement.message;
+      announcementItem.appendChild(messageDiv);
+
+      // Create dates container
+      const datesDiv = document.createElement("div");
+      datesDiv.className = "announcement-item-dates";
+
+      // Add start date if present
+      if (announcement.start_date) {
+        const startDateSpan = document.createElement("span");
+        startDateSpan.textContent = `📅 Start: ${formatDate(announcement.start_date)}`;
+        datesDiv.appendChild(startDateSpan);
+      }
+
+      // Add expiration date
+      const expirationDateSpan = document.createElement("span");
+      expirationDateSpan.textContent = `⏰ Expires: ${formatDate(announcement.expiration_date)}`;
+      datesDiv.appendChild(expirationDateSpan);
+
+      announcementItem.appendChild(datesDiv);
+
+      // Create actions container
+      const actionsDiv = document.createElement("div");
+      actionsDiv.className = "announcement-item-actions";
+
+      // Create edit button
+      const editBtn = document.createElement("button");
+      editBtn.className = "edit-announcement-btn";
+      editBtn.textContent = "✏️ Edit";
+      editBtn.onclick = () => editAnnouncement(announcement._id);
+      actionsDiv.appendChild(editBtn);
+
+      // Create delete button
+      const deleteBtn = document.createElement("button");
+      deleteBtn.className = "delete-announcement-btn";
+      deleteBtn.textContent = "🗑️ Delete";
+      deleteBtn.onclick = () => deleteAnnouncement(announcement._id);
+      actionsDiv.appendChild(deleteBtn);
+
+      announcementItem.appendChild(actionsDiv);
+      announcementsList.appendChild(announcementItem);
+    });
   }
 
   // Format date for display
