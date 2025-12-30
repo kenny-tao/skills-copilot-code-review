@@ -433,7 +433,8 @@ button {
 }
 
 .close-modal,
-.close-login-modal {
+.close-login-modal,
+.close-announcements-modal {
   position: absolute;
   right: 12px;
   top: 8px;
@@ -617,6 +618,24 @@ footer {
   position: absolute;
   top: 10px;
   right: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#manage-announcements-button {
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+#manage-announcements-button:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+#manage-announcements-button .announcement-icon {
+  font-size: 1.2rem;
 }
 
 #user-status {
@@ -666,9 +685,200 @@ footer {
 }
 
 .announcement-banner {
-  background-color: #4caf50;
+  background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
   color: #000000;
   text-align: center;
+  padding: 12px 20px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  animation: slideDown 0.4s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Announcements Management Modal Styles */
+.modal-large {
+  width: 90%;
+  max-width: 800px;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.announcement-form-section {
+  background-color: var(--background);
+  padding: 20px;
+  border-radius: 5px;
+  margin-bottom: 25px;
+}
+
+.announcement-form-section h4 {
+  margin-bottom: 15px;
+  color: var(--primary);
+  font-size: 1.1rem;
+}
+
+#announcement-form textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-family: Arial, sans-serif;
+  font-size: 0.9rem;
+  resize: vertical;
+  min-height: 80px;
+}
+
+#announcement-form textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.form-row {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.form-row .form-group {
+  flex: 1;
+  min-width: 200px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.secondary-button {
+  background-color: var(--text-secondary);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.secondary-button:hover {
+  background-color: var(--text-primary);
+}
+
+.announcements-list-section {
+  margin-top: 20px;
+}
+
+.announcements-list-section h4 {
+  margin-bottom: 15px;
+  color: var(--primary);
+  font-size: 1.1rem;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--border);
+}
+
+#announcements-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+.announcement-item {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 5px;
   padding: 15px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.announcement-item:hover {
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  border-color: var(--primary-light);
+}
+
+.announcement-item.expired {
+  opacity: 0.6;
+  background-color: var(--background);
+}
+
+.announcement-item.expired::after {
+  content: "EXPIRED";
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: var(--error);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-size: 0.7rem;
   font-weight: bold;
+}
+
+.announcement-item-message {
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.announcement-item-dates {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.announcement-item-dates span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.announcement-item-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.announcement-item-actions button {
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.edit-announcement-btn {
+  background-color: var(--primary);
+  color: white;
+}
+
+.edit-announcement-btn:hover {
+  background-color: var(--primary-dark);
+}
+
+.delete-announcement-btn {
+  background-color: var(--error);
+  color: white;
+}
+
+.delete-announcement-btn:hover {
+  background-color: #a71d2a;
 }
