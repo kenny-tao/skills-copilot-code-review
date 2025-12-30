@@ -166,7 +166,7 @@ def update_announcement(
         {"$set": update_data}
     )
     
-    if result.modified_count == 0 and result.matched_count == 0:
+    if result.matched_count == 0:
         raise HTTPException(
             status_code=500, detail="Failed to update announcement")
     
